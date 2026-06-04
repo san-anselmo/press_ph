@@ -778,3 +778,30 @@
         gap: .5rem;
       }
     }
+
+
+    .footer-meta-info {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      font-size: var(--fs-xs);
+      color: var(--sepia);
+      opacity: .85;
+    }
+    .footer-meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: .25rem;
+    }
+    .footer-meta-item:not(:last-child)::after {
+      content: '|';
+      margin-left: .75rem;
+      opacity: .3;
+    }
+    .footer-status-online {
+      color: #10b981;
+      font-weight: 600;
+    }
+    body.dark .footer-status-online {
+      color: #34d399;
+    }
