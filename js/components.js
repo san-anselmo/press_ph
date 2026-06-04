@@ -346,7 +346,7 @@ function injectFooter() {
         <div class="footer-links-col">
           <div class="footer-col-title">Navigation</div>
           <ul class="footer-links-list">
-            <li><a href="index.html">All Publications</a></li>
+            <li><a href="index.html">Our Publications</a></li>
             <li><a href="about.html">About Us</a></li>
             <li><a href="team.html">Our Team</a></li>
             <li><a href="authors.html">Authors</a></li>
@@ -373,7 +373,7 @@ function injectFooter() {
           &copy; 2026 San Anselmo Publications, Inc. All rights reserved.
         </div>
         <div class="footer-credit">
-          <a href="mailto:edzelfrincebual@gmail.com" target="_blank" rel="noopener">Developed and designed by Edzel Frince Bual.</a>
+          <a href="https://www.facebook.com/edzfrnc" target="_blank" rel="noopener">Developed and designed by Edzel Frince Bual.</a>
         </div>
       </div>
     </div>`;
