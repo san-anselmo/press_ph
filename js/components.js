@@ -23,7 +23,7 @@ const _bmIcon = (path) => `<svg class="bm-icon" viewBox="0 0 24 24"><path d="${p
 
 /* ── Nav items config ── */
 const _NAV_ITEMS = [
-  {section:'Catalog',   items:[{key:'catalog', label:'All Publications', icon:_SVG.book, href:'index.html'}]},
+  {section:'Catalog',   items:[{key:'catalog', label:'Our Publications', icon:_SVG.book, href:'index.html'}]},
   {section:'About',     items:[
     {key:'about',   label:'About Us',   icon:_SVG.info,   href:'about.html'},
     {key:'team',    label:'Our Team',   icon:_SVG.people, href:'team.html'},
