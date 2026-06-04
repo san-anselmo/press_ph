@@ -5,15 +5,46 @@ window._isCatalogPage = true;
 let _books = [];
 const CAT_ORDER_DEFAULT = ['Journal','Poetry','Fiction','Non-Fiction','Biography','Inspirational','Anthology',"Children's Literature",'General Reference'];
 
+/* ── Fuzzy Search Helpers (Typo Tolerance) ── */
+function levenshtein(a, b) {
+  if (a.length === 0) return b.length;
+  if (b.length === 0) return a.length;
+  let r0 = Array(b.length + 1).fill(0).map((_, i) => i);
+  let r1 = Array(b.length + 1).fill(0);
+  for (let i = 0; i < a.length; i++) {
+    r1[0] = i + 1;
+    for (let j = 0; j < b.length; j++) {
+      const cost = a[i] === b[j] ? 0 : 1;
+      r1[j + 1] = Math.min(r1[j] + 1, r0[j + 1] + 1, r0[j] + cost);
+    }
+    r0 = [...r1];
+  }
+  return r0[b.length];
+}
+function fuzzyMatch(text, query) {
+  if (!query) return true;
+  const qWords = query.toLowerCase().split(/\s+/).filter(Boolean);
+  if (!qWords.length) return true;
+  const tWords = text.toLowerCase().split(/[^\w\d\u00C0-\u00FF]+/).filter(Boolean);
+  return qWords.every(qw => {
+    return tWords.some(tw => {
+      if (tw.startsWith(qw) || tw.includes(qw)) return true;
+      const dist = levenshtein(qw, tw);
+      return qw.length <= 4 ? dist <= 1 : dist <= 2;
+    });
+  });
+}
+
 /* ── Search predictions (called by components.js) ── */
 window._catalogSearch = function(v) {
   const pred = document.getElementById('searchPreds');
   if (!pred) return;
   if (v.length > 0) {
-    const q = v.toLowerCase();
-    const m = _books.filter(b =>
-      b.title.toLowerCase().includes(q) || (authorDisplay(b) || '').toLowerCase().includes(q)
-    ).slice(0, 7);
+    const q = v.toLowerCase().trim();
+    const m = _books.filter(b => {
+      const fields = [b.title, authorDisplay(b) || '', b.category, b.year.toString()].join(' ');
+      return fuzzyMatch(fields, q);
+    }).slice(0, 7);
     if (m.length) {
       pred.innerHTML = m.map(b => `<div class="pred-item" role="option" tabindex="0"
         onclick="viewBook('${b.id}');closePreds()"
@@ -168,7 +199,8 @@ window.applyFilters = function() {
     const mY = yearFilter === 'All' || b.year.toString() === yearFilter;
     const mMn = !min || Number(b.price) >= parseInt(min);
     const mMx = !max || Number(b.price) <= parseInt(max);
-    const mQ = !q || b.title.toLowerCase().includes(q) || (b.author || '').toLowerCase().includes(q) || (b.editor || '').toLowerCase().includes(q);
+        const fields = [b.title, authorDisplay(b) || '', b.editor || '', b.category].join(' ');
+    const mQ = !q || fuzzyMatch(fields, q);
     return mY && mMn && mMx && mQ;
   });
   renderShelves(filtered, genre);
