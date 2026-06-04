@@ -374,7 +374,6 @@ function injectFooter() {
         </div>
         <div class="footer-meta-info">
           <span class="footer-meta-item">v1.0.10</span>
-          <span class="footer-meta-item footer-status-online">● CMS Connected</span>
         </div>
         <div class="footer-credit">
           <a href="https://www.facebook.com/edzfrnc" target="_blank" rel="noopener">Developed and designed by Edzel Frince Bual.</a>
